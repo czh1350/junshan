@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.junshan.item.mapper.JsSubjectMapper">
+
+    <resultMap type="com.junshan.item.domain.JsSubject" id="JsSubjectResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="subjectType"    column="subject_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectJsSubjectVo">
+        select id, name, subject_type, create_time, create_by, update_time, update_by, del_flag from js_subject
+    </sql>
+
+    <select id="selectJsSubjectList" parameterType="com.junshan.item.domain.JsSubject" resultMap="JsSubjectResult">
+        <include refid="selectJsSubjectVo"/>
+        <where>
+            del_flag = 0
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="subjectType != null "> and subject_type = #{subjectType}</if>
+        </where>
+    </select>
+
+    <select id="selectJsSubjectById" parameterType="Long" resultMap="JsSubjectResult">
+        <include refid="selectJsSubjectVo"/>
+        where id = #{id} and del_flag = 0
+    </select>
+
+    <insert id="insertJsSubject" parameterType="com.junshan.item.domain.JsSubject">
+        insert into js_subject
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="subjectType != null">subject_type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="subjectType != null">#{subjectType},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateJsSubject" parameterType="com.junshan.item.domain.JsSubject">
+        update js_subject
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="subjectType != null">subject_type = #{subjectType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="deleteJsSubjectById" parameterType="Long">
+        update js_subject set del_flag = 2 where id = #{id}
+    </update>
+
+    <update id="deleteJsSubjectByIds" parameterType="String">
+        update js_subject set del_flag = 2 where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

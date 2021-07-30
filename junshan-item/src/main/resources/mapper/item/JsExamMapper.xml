@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.junshan.item.mapper.JsExamMapper">
+
+    <resultMap type="com.junshan.item.domain.JsExam" id="JsExamResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="subjectId"    column="subject_id"    />
+        <result property="paperType"    column="paper_type"    />
+        <result property="score"    column="score"    />
+        <result property="questionCount"    column="question_count"    />
+        <result property="suggestTime"    column="suggest_time"    />
+        <result property="textQuestionId"    column="text_question_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectJsExamVo">
+        select id, name, subject_id, paper_type, score, question_count, suggest_time, text_question_id, create_time, create_by, update_time, update_by, del_flag from js_exam
+    </sql>
+
+    <select id="selectJsExamList" parameterType="com.junshan.item.domain.JsExam" resultMap="JsExamResult">
+        <include refid="selectJsExamVo"/>
+        <where>
+            del_flag = 0
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="paperType != null "> and paper_type = #{paperType}</if>
+            <if test="suggestTime != null "> and suggest_time = #{suggestTime}</if>
+        </where>
+    </select>
+
+    <select id="selectJsExamById" parameterType="Long" resultMap="JsExamResult">
+        <include refid="selectJsExamVo"/>
+        where id = #{id} and del_flag = 0
+    </select>
+
+    <insert id="insertJsExam" parameterType="com.junshan.item.domain.JsExam">
+        insert into js_exam
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="subjectId != null">subject_id,</if>
+            <if test="paperType != null">paper_type,</if>
+            <if test="score != null">score,</if>
+            <if test="questionCount != null">question_count,</if>
+            <if test="suggestTime != null">suggest_time,</if>
+            <if test="textQuestionId != null">text_question_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="subjectId != null">#{subjectId},</if>
+            <if test="paperType != null">#{paperType},</if>
+            <if test="score != null">#{score},</if>
+            <if test="questionCount != null">#{questionCount},</if>
+            <if test="suggestTime != null">#{suggestTime},</if>
+            <if test="textQuestionId != null">#{textQuestionId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateJsExam" parameterType="com.junshan.item.domain.JsExam">
+        update js_exam
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="subjectId != null">subject_id = #{subjectId},</if>
+            <if test="paperType != null">paper_type = #{paperType},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="questionCount != null">question_count = #{questionCount},</if>
+            <if test="suggestTime != null">suggest_time = #{suggestTime},</if>
+            <if test="textQuestionId != null">text_question_id = #{textQuestionId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="deleteJsExamById" parameterType="Long">
+        update js_exam set del_flag = 2 where id = #{id}
+    </update>
+
+    <update id="deleteJsExamByIds" parameterType="String">
+        update js_exam set del_flag = 2 where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>
