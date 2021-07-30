@@ -1,7 +1,7 @@
 # 项目相关配置
-ruoyi:
+junshan:
   # 名称
-  name: RuoYi
+  name: JunShan
   # 版本
   version: 3.4.0
   # 版权年份
@@ -33,7 +33,7 @@ server:
 # 日志配置
 logging:
   level:
-    com.ruoyi: debug
+    com.junshan: debug
     org.springframework: warn
 
 # Spring配置
@@ -91,7 +91,7 @@ token:
 # MyBatis配置
 mybatis:
     # 搜索指定包别名
-    typeAliasesPackage: com.ruoyi.**.domain
+    typeAliasesPackage: com.junshan.**.domain
     # 配置mapper的扫描，找到所有的mapper.xml映射文件
     mapperLocations: classpath*:mapper/**/*Mapper.xml
     # 加载全局的配置文件
